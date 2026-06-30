@@ -1,4 +1,12 @@
 <?php
+// --- TAMBAHKAN KODE INI DI PALING ATAS ---
+if (session_status() === PHP_SESSION_NONE) {
+    // Memaksa penempatan file session ke folder /tmp yang diizinkan Vercel
+    ini_set('session.save_path', '/tmp');
+    session_start();
+}
+// -----------------------------------------
+
 // Parameter Koneksi Resmi dari TiDB Cloud Kamu
 $host = 'gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com';
 $user = '2gxBZgfUU1M5kJm.root';
