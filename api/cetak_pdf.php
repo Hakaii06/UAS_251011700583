@@ -1,8 +1,8 @@
 <?php
-// Jalur absolut config
+// Jalur absolut ke config.php
 include dirname(__DIR__) . '/config.php';
 
-// PROTEKSI HALAMAN: Cek apakah Cookie login TIDAK ADA atau TIDAK VALID
+// PROTEKSI HALAMAN
 if (!isset($_COOKIE['login_user']) || $_COOKIE['login_user'] !== 'aktif') { 
     header("Location: /login"); 
     exit; 
@@ -18,14 +18,17 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background: #fff; color: #000; font-size: 13px; }
-        @media print { .no-print { display: none; } body { padding: 0; } }
+        @media print { 
+            .no-print { display: none; } 
+            body { padding: 0; } 
+        }
     </style>
 </head>
 <body onload="window.print();">
 <div class="container mt-5">
     <div class="text-center border-bottom pb-3 mb-4">
         <h3 class="fw-bold mb-1">LAPORAN REKAPITULASI DATA PRODUK UMKM BINAAN</h3>
-        <p class="text-muted small mb-0">Dokumen digenerate otomatis secara tersistem pada: <?= date('d-m-Y H:i'); ?> WIB</p>
+        <p class="text-muted small mb-0">Dokumen digenerate otomatis pada: <?= date('d-m-Y H:i'); ?> WIB</p>
     </div>
     
     <table class="table table-bordered align-middle text-center">
@@ -36,9 +39,8 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                 <th>Nama Produk</th>
                 <th>Kategori</th>
                 <th>Harga Jual</th>
-                <th>Stok</th>
+                <th>Stok Sisa</th>
                 <th>Nama UMKM</th>
-                <th>Deskripsi Singkat</th>
             </tr>
         </thead>
         <tbody>
@@ -46,12 +48,11 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
             <tr>
                 <td><?= $no++; ?></td>
                 <td><img src="uploads/<?= $row['gambar']; ?>" width="45" height="45" style="object-fit:cover; border-radius:4px;"></td>
-                <td class="fw-semibold"><?= $row['nama_produk']; ?></td>
-                <td><?= $row['kategori']; ?></td>
-                <td>Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
-                <td><?= $row['stok']; ?></td>
-                <td><?= $row['nama_umkm']; ?></td>
-                <td class="text-start small"><?= $row['deskripsi']; ?></td>
+                <td class="fw-semibold text-start"><?= htmlspecialchars($row['nama_produk']); ?></td>
+                <td><?= htmlspecialchars($row['kategori']); ?></td>
+                <td class="text-success fw-medium">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
+                <td><?= $row['stok']; ?> Pcs</td>
+                <td><?= htmlspecialchars($row['nama_umkm']); ?></td>
             </tr>
             <?php endwhile; ?>
         </tbody>
