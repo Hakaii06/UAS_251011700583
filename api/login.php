@@ -1,10 +1,9 @@
 <?php
-session_start();
-
 // Menggunakan jalur absolut agar aman di serverless Vercel
 include dirname(__DIR__) . '/config.php';
 
-if (isset($_SESSION['login'])) {
+// CEK COOKIE: Jika cookie login ada dan valid, langsung lempar ke index
+if (isset($_COOKIE['login_user']) && $_COOKIE['login_user'] === 'aktif') {
     header("Location: /index");
     exit;
 }
@@ -17,9 +16,18 @@ if (isset($_POST['login'])) {
     $result = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
     if (mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
-        // Pencocokan password sesuai database plain-text
+        
         if ($password === $row['password']) {
-            $_SESSION['login'] = true;
+            // LOGIN BERHASIL: Buat cookie berlaku selama 1 jam (3600 detik)
+            // Menggunakan opsi secure dan httponly agar aman di Vercel (HTTPS)
+            setcookie('login_user', 'aktif', [
+                'expires' => time() + 3600,
+                'path' => '/',
+                'secure' => true,
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+
             header("Location: /index");
             exit;
         }
