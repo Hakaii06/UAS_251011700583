@@ -6,13 +6,13 @@ if (empty($file)) {
     display_placeholder();
 }
 
-// 1. Jalur pencarian ke folder /tmp/ (untuk file baru hasil upload runtime)
+// 1. Jalur ke folder /tmp/ (untuk file hasil tambah/edit produk saat runtime di Vercel)
 $path_tmp = '/tmp/' . $file;
 
-// 2. Jalur pencarian ke folder uploads/ di sebelah file ini (untuk file bawaan GitHub)
+// 2. Jalur ke folder uploads/ yang berada di dalam folder api/ (sejajar dengan file ini)
 $path_uploads = __DIR__ . '/uploads/' . $file;
 
-// Tentukan lokasi file akhir yang benar-asli ada fisiknya
+// Logika penentuan lokasi file gambar yang valid
 if (file_exists($path_tmp) && is_file($path_tmp)) {
     $path_final = $path_tmp;
 } elseif (file_exists($path_uploads) && is_file($path_uploads)) {
@@ -21,7 +21,7 @@ if (file_exists($path_tmp) && is_file($path_tmp)) {
     $path_final = '';
 }
 
-// Jika gambar ditemukan di salah satu folder, kirimkan ke browser
+// Jika gambar ditemukan di salah satu folder, kirimkan langsung ke browser
 if (!empty($path_final)) {
     $ext = strtolower(pathinfo($path_final, PATHINFO_EXTENSION));
     $mime = ($ext === 'png') ? 'image/png' : (($ext === 'webp') ? 'image/webp' : 'image/jpeg');
@@ -34,7 +34,7 @@ if (!empty($path_final)) {
     display_placeholder();
 }
 
-// Fungsi pembantu untuk menampilkan blank placeholder jika gambar rusak/tidak ada
+// Fungsi pembantu jika gambar tidak ditemukan fisik datanya
 function display_placeholder() {
     header('Content-Type: image/png');
     echo base64_decode('iVBOR0w0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
