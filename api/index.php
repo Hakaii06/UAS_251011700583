@@ -1,6 +1,7 @@
 <?php
 include dirname(__DIR__) . '/config.php';
 
+// Proteksi halaman dashboard
 if (!isset($_COOKIE['login_user']) || $_COOKIE['login_user'] !== 'aktif') { 
     header("Location: /login"); 
     exit; 
@@ -75,7 +76,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                                 <td><?= $no++; ?></td>
                                 <td>
                                     <?php if(!empty($row['gambar'])): ?>
-                                        <img src="/baca_gambar?file=<?= $row['gambar']; ?>" width="50" height="50" style="object-fit:cover;" class="rounded">
+                                        <img src="uploads/<?= $row['gambar']; ?>" width="50" height="50" style="object-fit:cover;" class="rounded border" alt="Produk">
                                     <?php else: ?>
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:50px; height:50px;"><i class="bi bi-image text-muted"></i></div>
                                     <?php endif; ?>
