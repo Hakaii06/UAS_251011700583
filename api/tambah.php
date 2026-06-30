@@ -30,7 +30,7 @@ if (isset($_POST['simpan'])) {
             if ($ukuran_file <= 2000000) {
                 $nama_file_baru = uniqid() . '.' . $ekstensi_gambar;
                 // Target mengarah ke folder /uploads root proyek
-                $target_upload = dirname(__DIR__) . '/uploads/' . $nama_file_baru;
+                $target_upload = '/tmp/' . $nama_file_baru;
 
                 if (move_uploaded_file($tmp_name, $target_upload)) {
                     $query = "INSERT INTO produk (nama_produk, kategori, harga, stok, nama_umkm, deskripsi, gambar) 
