@@ -1,17 +1,31 @@
 <?php
 session_start();
-if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
-include 'config.php';
+if (!isset($_SESSION['login'])) { 
+    header("Location: /login"); 
+    exit; 
+}
 
-$id = $_GET['id'];
+include dirname(__DIR__) . '/config.php';
+
+if (!isset($_GET['id'])) {
+    header("Location: /index");
+    exit;
+}
+
+$id = (int)$_GET['id'];
 $data = mysqli_query($conn, "SELECT * FROM produk WHERE id = $id");
 $row = mysqli_fetch_assoc($data);
+
+if (!$row) {
+    header("Location: /index");
+    exit;
+}
 
 if (isset($_POST['submit'])) {
     $nama_produk = mysqli_real_escape_string($conn, $_POST['nama_produk']);
     $kategori    = $_POST['kategori'];
-    $harga       = $_POST['harga'];
-    $stok        = $_POST['stok'];
+    $harga       = (int)$_POST['harga'];
+    $stok        = (int)$_POST['stok'];
     $nama_umkm   = mysqli_real_escape_string($conn, $_POST['nama_umkm']);
     $deskripsi   = mysqli_real_escape_string($conn, $_POST['deskripsi']);
     $gambar_lama = $_POST['gambar_lama'];
@@ -27,7 +41,10 @@ if (isset($_POST['submit'])) {
     }
 
     $query = "UPDATE produk SET nama_produk='$nama_produk', kategori='$kategori', harga='$harga', stok='$stok', nama_umkm='$nama_umkm', deskripsi='$deskripsi', gambar='$newName' WHERE id=$id";
-    if (mysqli_query($conn, $query)) { header("Location: index.php"); exit; }
+    if (mysqli_query($conn, $query)) { 
+        header("Location: /index"); 
+        exit; 
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -90,7 +107,7 @@ if (isset($_POST['submit'])) {
                 <small class="text-muted" style="font-size: 11px;">*Abaikan field ini jika tidak ingin merubah gambar produk</small>
             </div>
             <div class="d-flex justify-content-between">
-                <a href="index.php" class="btn btn-light btn-sm px-3 rounded-2 fw-medium">Kembali</a>
+                <a href="/index" class="btn btn-light btn-sm px-3 rounded-2 fw-medium">Kembali</a>
                 <button type="submit" name="submit" class="btn btn-warning btn-sm px-4 rounded-2 fw-semibold text-white">Update Data</button>
             </div>
         </form>
