@@ -5,7 +5,7 @@ session_start();
 include dirname(__DIR__) . '/config.php';
 
 if (isset($_SESSION['login'])) {
-    header("Location: index");
+    header("Location: /index");
     exit;
 }
 
@@ -20,7 +20,7 @@ if (isset($_POST['login'])) {
         // Pencocokan password sesuai database plain-text
         if ($password === $row['password']) {
             $_SESSION['login'] = true;
-            header("Location: index");
+            header("Location: /index");
             exit;
         }
     }
