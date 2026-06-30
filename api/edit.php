@@ -41,13 +41,13 @@ if (isset($_POST['ubah'])) {
 
         if (in_array($ekstensi_gambar, $ekstensi_valid)) {
             $nama_file_baru = uniqid() . '.' . $ekstensi_gambar;
-            // Ditulis ke /tmp/ agar Vercel tidak mengeluarkan error Read-Only
+            // Diarahkan ke /tmp/ untuk runtime aman serverless Vercel
             $target_upload = '/tmp/' . $nama_file_baru;
 
             if (move_uploaded_file($tmp_name, $target_upload)) {
                 $query = "UPDATE produk SET nama_produk='$nama_produk', kategori='$kategori', harga=$harga, stok=$stok, nama_umkm='$nama_umkm', deskripsi='$deskripsi', gambar='$nama_file_baru' WHERE id=$id";
             } else {
-                $error = "Gagal mengunggah gambar baru.";
+                $error = "Gagal mengunggah file gambar baru ke server.";
             }
         } else {
             $error = "Format file gambar tidak didukung!";
@@ -92,7 +92,7 @@ if (isset($_POST['ubah'])) {
             <div class="mb-3"><label class="form-label small fw-semibold">Deskripsi</label><textarea name="deskripsi" class="form-control" rows="3" required><?= htmlspecialchars($product['deskripsi']); ?></textarea></div>
             <div class="mb-4">
                 <label class="form-label small fw-semibold">Gambar Saat Ini</label>
-                <div class="mb-2"><img src="/baca_gambar?file=<?= $product['gambar']; ?>" width="65" height="65" style="object-fit:cover;" class="rounded border"></div>
+                <div class="mb-2"><img src="uploads/<?= $product['gambar']; ?>" width="85" height="85" style="object-fit:cover;" class="rounded border"></div>
                 <input type="file" name="gambar" class="form-control" accept="image/*">
             </div>
             <button type="submit" name="ubah" class="btn btn-warning w-100 fw-semibold text-dark">Simpan Perubahan</button>
