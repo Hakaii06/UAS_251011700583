@@ -1,11 +1,11 @@
 <?php
-// Mengambil nama file gambar secara aman dari URL
+// Mengambil nama file gambar secara aman dari URL (?file=nama_file.jpg)
 $file = isset($_GET['file']) ? basename($_GET['file']) : '';
 
-// 1. Jalur pencarian ke folder /tmp/ (untuk file baru hasil tambah/edit produk)
+// 1. Jalur pencarian ke folder /tmp/ (untuk file baru hasil tambah/edit produk saat runtime)
 $path_tmp = '/tmp/' . $file;
 
-// 2. Jalur pencarian ke folder api/uploads/ yang ada di GitHub (untuk gambar bawaan)
+// 2. Jalur pencarian ke folder api/uploads/ yang ada di GitHub (untuk gambar bawaan proyek)
 $path_uploads = __DIR__ . '/uploads/' . $file;
 
 // Logika penentuan lokasi file gambar yang valid
@@ -26,7 +26,7 @@ if (!empty($path_final)) {
     readfile($path_final);
     exit;
 } else {
-    // Jika data gambar di database tidak ada fisiknya, tampilkan placeholder transparan
+    // Jika data gambar di database tidak ada fisiknya di server, tampilkan placeholder transparan
     header('Content-Type: image/png');
     echo base64_decode('iVBOR0w0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
     exit;
