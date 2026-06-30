@@ -1,11 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])) { 
-    header("Location: login"); 
+    header("Location: /login"); 
     exit; 
 }
 
-// Menggunakan jalur absolut agar aman di serverless Vercel
 include dirname(__DIR__) . '/config.php';
 
 $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
@@ -28,7 +27,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
     <div class="container">
         <a class="navbar-brand" href="#">UMKM Hub</a>
-        <a href="logout" class="btn btn-outline-danger btn-sm rounded-2 fw-medium">Keluar</a>
+        <a href="/logout" class="btn btn-outline-danger btn-sm rounded-2 fw-medium">Keluar</a>
     </div>
 </nav>
 
@@ -39,7 +38,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
             <p class="text-muted small mb-0">Manajemen data katalog produk binaan daerah</p>
         </div>
         <div>
-            <a href="tambah" class="btn btn-primary btn-sm px-3 rounded-2 fw-semibold">Tambah Produk</a>
+            <a href="/tambah" class="btn btn-primary btn-sm px-3 rounded-2 fw-semibold">Tambah Produk</a>
         </div>
     </div>
 
@@ -67,7 +66,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                         <td><?= $row['stok']; ?> unit</td>
                         <td><?= htmlspecialchars($row['nama_umkm']); ?></td>
                         <td class="text-center">
-                            <a href="edit?id=<?= $row['id']; ?>" class="btn btn-light btn-sm text-warning border fw-medium px-2 py-1 me-1">Edit</a>
+                            <a href="/edit?id=<?= $row['id']; ?>" class="btn btn-light btn-sm text-warning border fw-medium px-2 py-1 me-1">Edit</a>
                         </td>
                     </tr>
                     <?php endwhile; if(mysqli_num_rows($result) == 0): ?>
