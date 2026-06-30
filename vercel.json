@@ -5,17 +5,21 @@
     }
   },
   "routes": [
-    { 
-      "src": "/(login|index|tambah|edit|cetak_pdf|logout)", 
-      "dest": "/api/$1.php" 
+    {
+      "src": "/(login|index|tambah|edit|cetak_pdf|logout).php",
+      "dest": "/api/$1.php"
+    },
+    {
+      "src": "/(login|index|tambah|edit|cetak_pdf|logout)",
+      "dest": "/api/$1.php"
     },
     {
       "src": "/",
       "dest": "/api/index.php"
     },
-    { 
-      "src": "/(.*)", 
-      "dest": "/$1" 
+    {
+      "src": "/(.*)",
+      "dest": "/api/$1"
     }
   ]
 }
