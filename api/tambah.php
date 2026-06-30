@@ -1,11 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])) { 
-    header("Location: login"); 
+    header("Location: /login"); 
     exit; 
 }
 
-// Menggunakan jalur absolut agar aman di serverless Vercel
 include dirname(__DIR__) . '/config.php';
 
 if (isset($_POST['submit'])) {
@@ -20,12 +19,13 @@ if (isset($_POST['submit'])) {
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
     $newName = time() . '_' . uniqid() . '.' . $ext;
     
-    // Simpan teks nama file ke DB. Catatan: Pada Vercel Serverless, file upload lokal bersifat sementara.
+    // PERINGATAN: Di Vercel Serverless, file lokal di /uploads akan hilang berkala.
+    // Disarankan integrasi Cloudinary / Supabase Storage untuk produksi kelak.
     $query = "INSERT INTO produk (nama_produk, kategori, harga, stok, nama_umkm, deskripsi, gambar) 
               VALUES ('$nama_produk', '$kategori', '$harga', '$stok', '$nama_umkm', '$deskripsi', '$newName')";
               
     if (mysqli_query($conn, $query)) {
-        header("Location: index");
+        header("Location: /index");
         exit;
     }
 }
@@ -89,7 +89,7 @@ if (isset($_POST['submit'])) {
                 <input type="file" name="gambar" class="form-control form-control-sm" accept="image/*" required>
             </div>
             <div class="d-flex justify-content-between">
-                <a href="index" class="btn btn-light btn-sm px-3 rounded-2 fw-medium">Kembali</a>
+                <a href="/index" class="btn btn-light btn-sm px-3 rounded-2 fw-medium">Kembali</a>
                 <button type="submit" name="submit" class="btn btn-primary btn-sm px-4 rounded-2 fw-semibold">Simpan Data</button>
             </div>
         </form>
