@@ -1,5 +1,5 @@
 <?php
-// Jalur absolut config
+// Jalur absolut ke config.php
 include dirname(__DIR__) . '/config.php';
 
 // PROTEKSI HALAMAN: Cek apakah Cookie login TIDAK ADA atau TIDAK VALID
