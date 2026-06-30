@@ -1,8 +1,6 @@
 <?php
 session_start();
-$_SESSION = [];
-session_unset();
-session_destroy();
-header("Location: login.php");
+session_destroy(); // Hancurkan semua session data login
+header("Location: login"); // Tendang ke /login tanpa .php
 exit;
 ?>
