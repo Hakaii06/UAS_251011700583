@@ -41,7 +41,7 @@ if (isset($_POST['ubah'])) {
 
         if (in_array($ekstensi_gambar, $ekstensi_valid)) {
             $nama_file_baru = uniqid() . '.' . $ekstensi_gambar;
-            // Diarahkan ke /tmp/ untuk runtime aman serverless Vercel
+            // Ditulis ke /tmp/ agar Vercel mengizinkan proses upload (Read-Only bypass)
             $target_upload = '/tmp/' . $nama_file_baru;
 
             if (move_uploaded_file($tmp_name, $target_upload)) {
@@ -92,10 +92,13 @@ if (isset($_POST['ubah'])) {
             <div class="mb-3"><label class="form-label small fw-semibold">Deskripsi</label><textarea name="deskripsi" class="form-control" rows="3" required><?= htmlspecialchars($product['deskripsi']); ?></textarea></div>
             <div class="mb-4">
                 <label class="form-label small fw-semibold">Gambar Saat Ini</label>
-                <div class="mb-2"><img src="uploads/<?= $product['gambar']; ?>" width="85" height="85" style="object-fit:cover;" class="rounded border"></div>
+                <div class="mb-2"><img src="/baca_gambar?file=<?= urlencode($product['gambar']); ?>" width="85" height="85" style="object-fit:cover; border-radius: 12px;" class="border shadow-sm"></div>
                 <input type="file" name="gambar" class="form-control" accept="image/*">
             </div>
-            <button type="submit" name="ubah" class="btn btn-warning w-100 fw-semibold text-dark">Simpan Perubahan</button>
+            <div class="d-flex gap-2">
+                <a href="/index" class="btn btn-light w-50 fw-semibold">Kembali</a>
+                <button type="submit" name="ubah" class="btn btn-warning w-50 fw-semibold text-dark">Update Data</button>
+            </div>
         </form>
     </div>
 </div>
