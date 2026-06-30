@@ -1,11 +1,12 @@
 <?php
-session_start();
-if (!isset($_SESSION['login'])) { 
+// Jalur absolut config
+include dirname(__DIR__) . '/config.php';
+
+// PROTEKSI HALAMAN: Cek apakah Cookie login TIDAK ADA atau TIDAK VALID
+if (!isset($_COOKIE['login_user']) || $_COOKIE['login_user'] !== 'aktif') { 
     header("Location: /login"); 
     exit; 
 }
-
-include dirname(__DIR__) . '/config.php';
 
 if (!isset($_GET['id'])) {
     header("Location: /index");
