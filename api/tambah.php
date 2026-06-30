@@ -17,7 +17,7 @@ if (isset($_POST['simpan'])) {
     $harga       = (int)$_POST['harga'];
     $stok        = (int)$_POST['stok'];
     $nama_umkm   = mysqli_real_escape_string($conn, $_POST['nama_umkm']);
-    $deskripsi   = mysqli_real_escape_string($conn, $_POST['deskripsi']); // Mengambil data deskripsi
+    $deskripsi   = mysqli_real_escape_string($conn, $_POST['deskripsi']);
 
     // LOGIKA UPLOAD GAMBAR
     $nama_gambar = $_FILES['gambar']['name'];
@@ -38,16 +38,11 @@ if (isset($_POST['simpan'])) {
                 // Generate nama file baru yang unik
                 $nama_file_baru = uniqid() . '.' . $ekstensi_gambar;
                 
-                // PENTING UNTUK VERCEL: Arahkan folder keluar dari /api menuju /uploads di root
-                $target_upload = dirname(__DIR__) . '/uploads/' . $nama_file_baru;
-
-                // Buat folder uploads otomatis jika belum ada di root
-                if (!is_dir(dirname(__DIR__) . '/uploads')) {
-                    mkdir(dirname(__DIR__) . '/uploads', 0755, true);
-                }
+                // SOLUSI VERCEL: Simpan file fisik ke folder /tmp yang diizinkan sistem serverless
+                $target_upload = '/tmp/' . $nama_file_baru;
 
                 if (move_uploaded_file($tmp_name, $target_upload)) {
-                    // Masukkan ke database jika upload file fisik berhasil
+                    // Masukkan nama filenya saja ke database TiDB Cloud
                     $query = "INSERT INTO produk (nama_produk, kategori, harga, stok, nama_umkm, deskripsi, gambar) 
                               VALUES ('$nama_produk', '$kategori', $harga, $stok, '$nama_umkm', '$deskripsi', '$nama_file_baru')";
                     
@@ -58,7 +53,7 @@ if (isset($_POST['simpan'])) {
                         $error = "Gagal menyimpan data ke database: " . mysqli_error($conn);
                     }
                 } else {
-                    $error = "Gagal memindahkan file gambar ke folder server.";
+                    $error = "Gagal memindahkan file gambar ke folder /tmp server.";
                 }
             } else {
                 $error = "Ukuran gambar terlalu besar! Maksimal 2MB.";
@@ -142,13 +137,13 @@ if (isset($_POST['simpan'])) {
 
                 <div class="col-12 mb-3">
                     <label class="form-label small fw-semibold text-secondary">Deskripsi Singkat</label>
-                    <textarea name="deskripsi" class="form-control rows-3" rows="3" placeholder="Tuliskan keterangan deskripsi produk secara singkat di sini..." required></textarea>
+                    <textarea name="deskripsi" class="form-control" rows="3" placeholder="Tuliskan keterangan deskripsi produk secara singkat di sini..." required></textarea>
                 </div>
 
                 <div class="col-12 mb-4">
                     <label class="form-label small fw-semibold text-secondary">Gambar / Preview Produk</label>
                     <input type="file" name="gambar" class="form-control py-2" accept="image/*" required>
-                    <div class="form-text text-muted small">Ekstensi diperbolehkan: PNG, JPG, JPEG, WEBP. Maksimal ukuran 2MB.</div>
+                    <div class="form-text text-muted small">Format diperbolehkan: PNG, JPG, JPEG, WEBP. Maksimal ukuran 2MB.</div>
                 </div>
 
                 <div class="col-12">
