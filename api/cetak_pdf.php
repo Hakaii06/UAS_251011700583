@@ -45,7 +45,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                 <td class="text-center"><?= $no++; ?></td>
                 <td class="text-center">
                     <?php if(!empty($row['gambar'])): ?>
-                        <img src="uploads/<?= $row['gambar']; ?>" width="50" height="50" style="object-fit:cover;" class="rounded border">
+                        <img src="/baca_gambar?file=<?= urlencode($row['gambar']); ?>" width="50" height="50" style="object-fit:cover;" class="rounded border">
                     <?php else: ?>
                         <span class="text-muted" style="font-size: 10px;">No Img</span>
                     <?php endif; ?>
