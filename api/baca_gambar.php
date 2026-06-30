@@ -1,19 +1,28 @@
 <?php
-// Ambil nama file dari parameter URL aman (?file=nama_foto.png)
 $file = isset($_GET['file']) ? basename($_GET['file']) : '';
-$path = '/tmp/' . $file;
 
-if (!empty($file) && file_exists($path)) {
-    // Cari tahu tipe file gambar
-    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+// 1. Cek di folder /tmp (untuk gambar yang baru diupload)
+$path_tmp = '/tmp/' . $file;
+// 2. Cek di folder uploads root (untuk gambar bawaan dari GitHub)
+$path_uploads = dirname(__DIR__) . '/uploads/' . $file;
+
+if (!empty($file) && file_exists($path_tmp)) {
+    $path_final = $path_tmp;
+} elseif (!empty($file) && file_exists($path_uploads)) {
+    $path_final = $path_uploads;
+} else {
+    $path_final = '';
+}
+
+if (!empty($path_final)) {
+    $ext = strtolower(pathinfo($path_final, PATHINFO_EXTENSION));
     $mime = ($ext == 'png') ? 'image/png' : (($ext == 'webp') ? 'image/webp' : 'image/jpeg');
     
-    // Kirim header gambar dan baca filenya
     header('Content-Type: ' . $mime);
-    readfile($path);
+    readfile($path_final);
     exit;
 } else {
-    // Jika gambar hilang (karena serverless function di-reset otomatis oleh Vercel), tampilkan gambar transparan mini
+    // Jika di kedua tempat tidak ada, tampilkan gambar transparan kosong agar tidak kelihatan rusak
     header('Content-Type: image/png');
     echo base64_decode('iVBOR0w0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
     exit;
