@@ -20,7 +20,6 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .sidebar { background-color: #1e293b; min-height: 100vh; color: #cbd5e1; }
@@ -41,7 +40,6 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                     <i class="bi bi-box-seam-fill text-primary fs-3"></i>
                     <h5 class="fw-bold text-white mb-0">UMKM Hub Portal</h5>
                 </div>
-                
                 <p class="text-uppercase text-muted small fw-bold tracking-wider mb-2">Menu Navigasi</p>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -50,7 +48,6 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                         </a>
                     </li>
                 </ul>
-
                 <p class="text-uppercase text-muted small fw-bold tracking-wider mt-4 mb-2">Sesi</p>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -60,10 +57,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                     </li>
                 </ul>
             </div>
-            
-            <div class="text-muted small">
-                &copy; <?= date('Y'); ?> UMKM Hub
-            </div>
+            <div class="text-muted small">&copy; <?= date('Y'); ?> UMKM Hub</div>
         </div>
 
         <div class="col-md-9 col-lg-10 p-5">
@@ -72,11 +66,9 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                     <h3 class="fw-bold text-dark mb-1">Manajemen Data Entri</h3>
                     <p class="text-muted mb-0">Kelola informasi katalog produk unit usaha UMKM binaan.</p>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="text-end d-none d-sm-block">
-                        <small class="text-muted d-block">Masuk sebagai:</small>
-                        <span class="fw-semibold text-dark"><i class="bi bi-person-circle me-1"></i> Admin</span>
-                    </div>
+                <div class="text-end d-none d-sm-block">
+                    <small class="text-muted d-block">Masuk sebagai:</small>
+                    <span class="fw-semibold text-dark"><i class="bi bi-person-circle me-1"></i> Admin</span>
                 </div>
             </div>
 
@@ -109,8 +101,8 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                             <tr>
                                 <td class="fw-medium text-secondary"><?= $no++; ?></td>
                                 <td>
-                                    <?php if(!empty($row['gambar'])): ?>
-                                        <img src="/baca_gambar?file=<?= $row['gambar']; ?>" width="50" height="50" alt="Produk">
+                                    <?php if(!empty($row['gambar']) && file_exists(dirname(__DIR__) . '/uploads/' . $row['gambar'])): ?>
+                                        <img src="uploads/<?= $row['gambar']; ?>" width="50" height="50" alt="Produk">
                                     <?php else: ?>
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
                                             <i class="bi bi-image text-muted"></i>
@@ -118,42 +110,29 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                                     <?php endif; ?>
                                 </td>
                                 <td class="fw-semibold text-dark"><?= htmlspecialchars($row['nama_produk']); ?></td>
-                                <td>
-                                    <span class="badge bg-light text-primary border border-primary-subtle px-2 py-1">
-                                        <?= htmlspecialchars($row['kategori']); ?>
-                                    </span>
-                                </td>
+                                <td><span class="badge bg-light text-primary border border-primary-subtle px-2 py-1"><?= htmlspecialchars($row['kategori']); ?></span></td>
                                 <td class="fw-bold text-success">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
                                 <td><?= $row['stok']; ?> Pcs</td>
                                 <td class="text-secondary"><?= htmlspecialchars($row['nama_umkm']); ?></td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="/edit?id=<?= $row['id']; ?>" class="btn btn-sm btn-outline-warning fw-medium px-2 py-1">
-                                            <i class="bi bi-pencil-square"></i> Edit
-                                        </a>
-                                        <a href="/hapus?id=<?= $row['id']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');" class="btn btn-sm btn-outline-danger fw-medium px-2 py-1">
-                                            <i class="bi bi-trash"></i> Hapus
-                                        </a>
+                                        <a href="/edit?id=<?= $row['id']; ?>" class="btn btn-sm btn-outline-warning fw-medium px-2 py-1"><i class="bi bi-pencil-square"></i> Edit</a>
+                                        <a href="/hapus?id=<?= $row['id']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');" class="btn btn-sm btn-outline-danger fw-medium px-2 py-1"><i class="bi bi-trash"></i> Hapus</a>
                                     </div>
                                 </td>
                             </tr>
                             <?php endwhile; if(mysqli_num_rows($result) == 0): ?>
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-5">
-                                    <i class="bi bi-box-open fs-2 d-block mb-2"></i>
-                                    Belum ada data produk komoditas.
-                                </td>
+                                <td colspan="8" class="text-center text-muted py-5"><i class="bi bi-box-open fs-2 d-block mb-2"></i>Belum ada data produk komoditas.</td>
                             </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
