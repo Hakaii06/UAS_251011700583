@@ -1,7 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
-include 'config.php';
+if (!isset($_SESSION['login'])) { 
+    header("Location: /login"); 
+    exit; 
+}
+
+include dirname(__DIR__) . '/config.php';
+
 $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
@@ -53,7 +58,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
     
     <div class="text-center mt-5 no-print">
         <button onclick="window.print();" class="btn btn-primary btn-sm me-2">Cetak Ulang</button>
-        <a href="index.php" class="btn btn-secondary btn-sm">Kembali ke Beranda</a>
+        <a href="/index" class="btn btn-secondary btn-sm">Kembali ke Beranda</a>
     </div>
 </div>
 </body>
