@@ -6,20 +6,28 @@
   },
   "routes": [
     {
-      "src": "/(login|index|tambah|edit|cetak_pdf|logout).php",
-      "dest": "/api/$1.php"
+      "src": "/login",
+      "dest": "/api/login.php"
     },
     {
-      "src": "/(login|index|tambah|edit|cetak_pdf|logout)",
-      "dest": "/api/$1.php"
-    },
-    {
-      "src": "/",
+      "src": "/index",
       "dest": "/api/index.php"
     },
     {
-      "src": "/(.*)",
-      "dest": "/api/$1"
+      "src": "/tambah",
+      "dest": "/api/tambah.php"
+    },
+    {
+      "src": "/edit",
+      "dest": "/api/edit.php"
+    },
+    {
+      "src": "/logout",
+      "dest": "/api/logout.php"
+    },
+    {
+      "src": "/",
+      "dest": "/api/login.php"
     }
   ]
 }
