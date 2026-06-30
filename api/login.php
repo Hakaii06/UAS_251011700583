@@ -1,7 +1,8 @@
 <?php
 session_start();
-// Mundur satu folder ke root untuk mengambil config.php
-include '../config.php';
+
+// Menggunakan jalur absolut agar aman di serverless Vercel
+include dirname(__DIR__) . '/config.php';
 
 if (isset($_SESSION['login'])) {
     header("Location: index");
