@@ -76,19 +76,21 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                                 <td><?= $no++; ?></td>
                                 <td>
                                     <?php if(!empty($row['gambar'])): ?>
-                                        <img src="uploads/<?= $row['gambar']; ?>" width="50" height="50" style="object-fit:cover;" class="rounded border" alt="Produk">
+                                        <img src="/baca_gambar?file=<?= urlencode($row['gambar']); ?>" width="55" height="55" style="object-fit: cover; border-radius: 12px;" class="border shadow-sm" alt="Preview">
                                     <?php else: ?>
-                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:50px; height:50px;"><i class="bi bi-image text-muted"></i></div>
+                                        <div class="bg-light rounded-3 d-flex align-items-center justify-content-center border" style="width:55px; height:55px;">
+                                            <i class="bi bi-image text-muted" style="font-size: 1.2rem;"></i>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
-                                <td class="fw-semibold"><?= htmlspecialchars($row['nama_produk']); ?></td>
-                                <td><span class="badge bg-light text-primary border"><?= htmlspecialchars($row['kategori']); ?></span></td>
+                                <td class="fw-semibold text-dark"><?= htmlspecialchars($row['nama_produk']); ?></td>
+                                <td><span class="badge bg-light text-primary border px-2 py-1.5"><?= htmlspecialchars($row['kategori']); ?></span></td>
                                 <td class="fw-bold text-success">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></td>
-                                <td><?= $row['stok']; ?> Pcs</td>
+                                <td><span class="fw-medium"><?= $row['stok']; ?></span> Pcs</td>
                                 <td><?= htmlspecialchars($row['nama_umkm']); ?></td>
                                 <td class="text-center">
-                                    <a href="/edit?id=<?= $row['id']; ?>" class="btn btn-sm btn-outline-warning">Edit</a>
-                                    <a href="/hapus?id=<?= $row['id']; ?>" onclick="return confirm('Yakin hapus?');" class="btn btn-sm btn-outline-danger">Hapus</a>
+                                    <a href="/edit?id=<?= $row['id']; ?>" class="btn btn-sm btn-outline-warning fw-medium rounded-2">Edit</a>
+                                    <a href="/hapus?id=<?= $row['id']; ?>" onclick="return confirm('Yakin hapus produk ini?');" class="btn btn-sm btn-outline-danger rounded-2">Hapus</a>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
