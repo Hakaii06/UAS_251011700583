@@ -110,7 +110,7 @@ $result = mysqli_query($conn, "SELECT * FROM produk ORDER BY id DESC");
                                 <td class="fw-medium text-secondary"><?= $no++; ?></td>
                                 <td>
                                     <?php if(!empty($row['gambar'])): ?>
-                                        <img src="uploads/<?= $row['gambar']; ?>" width="50" height="50" alt="Produk">
+                                        <img src="/baca_gambar?file=<?= $row['gambar']; ?>" width="50" height="50" alt="Produk">
                                     <?php else: ?>
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
                                             <i class="bi bi-image text-muted"></i>
