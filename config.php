@@ -1,9 +1,9 @@
 <?php
 // Parameter Koneksi Resmi dari TiDB Cloud Kamu
 $host = 'gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com';
-$user = '2b18rGRFVFYTq3z.root';
-$pass = 'IGc4z17ERYTUhQ7v';
-$db   = 'db_umkm';
+$user = '2gxBZgfUU1M5kJm.root';
+$pass = 'lrWTxGzj2UJP9nRF';
+$db   = 'dbumkmhub';
 $port = 4000;
 
 // Inisialisasi MySQLi untuk mengaktifkan fitur SSL/TLS
