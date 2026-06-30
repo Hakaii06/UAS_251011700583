@@ -4,8 +4,9 @@ if (!isset($_SESSION['login'])) {
     header("Location: login"); 
     exit; 
 }
-// Mundur satu folder ke root untuk mengambil config.php
-include '../config.php';
+
+// Menggunakan jalur absolut agar aman di serverless Vercel
+include dirname(__DIR__) . '/config.php';
 
 if (isset($_POST['submit'])) {
     $nama_produk = mysqli_real_escape_string($conn, $_POST['nama_produk']);
@@ -18,17 +19,14 @@ if (isset($_POST['submit'])) {
     $filename = $_FILES['gambar']['name'];
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
     $newName = time() . '_' . uniqid() . '.' . $ext;
-    $target = "uploads/" . $newName;
-
-    // Catatan: Pada Vercel Serverless, file temporary akan sukses terupload namun bersifat ephemeral (sementara)
-    if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target)) {
-        $query = "INSERT INTO produk (nama_produk, kategori, harga, stok, nama_umkm, deskripsi, gambar) 
-                  VALUES ('$nama_produk', '$kategori', '$harga', '$stok', '$nama_umkm', '$deskripsi', '$newName')";
-                  
-        if (mysqli_query($conn, $query)) {
-            header("Location: index");
-            exit;
-        }
+    
+    // Simpan teks nama file ke DB. Catatan: Pada Vercel Serverless, file upload lokal bersifat sementara.
+    $query = "INSERT INTO produk (nama_produk, kategori, harga, stok, nama_umkm, deskripsi, gambar) 
+              VALUES ('$nama_produk', '$kategori', '$harga', '$stok', '$nama_umkm', '$deskripsi', '$newName')";
+              
+    if (mysqli_query($conn, $query)) {
+        header("Location: index");
+        exit;
     }
 }
 ?>
