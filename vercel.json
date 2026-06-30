@@ -12,6 +12,7 @@
     { "src": "/logout", "dest": "/api/logout.php" },
     { "src": "/hapus", "dest": "/api/hapus.php" },
     { "src": "/cetak_pdf", "dest": "/api/cetak_pdf.php" },
+    { "src": "/baca_gambar", "dest": "/api/baca_gambar.php" },
     { "src": "/", "dest": "/api/login.php" }
   ]
 }
