@@ -6,7 +6,9 @@
   },
   "routes": [
     { "src": "/", "dest": "/api/login.php" },
-    { "src": "/(login|index|tambah|logout)", "dest": "/api/$1.php" },
-    { "src": "/(.*)", "dest": "/$1" }
+    { "src": "/login", "dest": "/api/login.php" },
+    { "src": "/index", "dest": "/api/index.php" },
+    { "src": "/tambah", "dest": "/api/tambah.php" },
+    { "src": "/(.*)", "dest": "/api/$1" }
   ]
 }
